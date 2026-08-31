@@ -34,6 +34,13 @@
     status.style.background = "red";
   });
 </script>
+
+    <script>
+  window.addEventListener("arjs-nft-loaded", () => {
+    const loader = document.querySelector(".arjs-loader");
+    if (loader) loader.style.display = "none";
+  });
+</script>
     body {
       margin: 0;
       overflow: hidden;
@@ -76,11 +83,13 @@
   id="marker"
   type="nft"
   url="./myframe-fixed"
+  emitevents="true"
   smooth="true"
   smoothCount="10"
   smoothTolerance="0.01"
   smoothThreshold="5"
->
+   
+   >
 
     <a-box
       position="150 150 -100"
