@@ -8,6 +8,32 @@
   <script src="https://raw.githack.com/AR-js-org/AR.js/3.4.8/aframe/build/aframe-ar-nft.js"></script>
 
   <style>
+    <div id="status"
+     style="position:fixed;
+            top:20px;
+            left:20px;
+            z-index:99999;
+            background:red;
+            color:white;
+            padding:15px;
+            font-size:20px;">
+  SEARCHING FOR IMAGE...
+</div>
+
+<script>
+  const marker = document.querySelector("#marker");
+  const status = document.querySelector("#status");
+
+  marker.addEventListener("markerFound", () => {
+    status.innerHTML = "MARKER FOUND!";
+    status.style.background = "green";
+  });
+
+  marker.addEventListener("markerLost", () => {
+    status.innerHTML = "MARKER LOST";
+    status.style.background = "red";
+  });
+</script>
     body {
       margin: 0;
       overflow: hidden;
@@ -47,13 +73,14 @@
 >
 
   <a-nft
-    type="nft"
-    url="./myframe-fixed"
-    smooth="true"
-    smoothCount="10"
-    smoothTolerance="0.01"
-    smoothThreshold="5"
-  >
+  id="marker"
+  type="nft"
+  url="./myframe-fixed"
+  smooth="true"
+  smoothCount="10"
+  smoothTolerance="0.01"
+  smoothThreshold="5"
+>
 
     <a-box
       position="150 150 -100"
