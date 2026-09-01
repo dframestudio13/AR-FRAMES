@@ -1,80 +1,72 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AR Frames - MindAR</title>
 
- <script src="https://cdn.jsdelivr.net/gh/aframevr/aframe@1.6.0/dist/aframe-master.min.js"></script>
+  <script src="https://aframe.io/releases/1.6.0/aframe.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mind-ar@1.2.5/dist/mindar-image-aframe.prod.js"></script>
 
-<script src="https://raw.githack.com/AR-js-org/AR.js/master/aframe/build/aframe-ar-nft.js"></script>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+    }
+
+    #status {
+      position: fixed;
+      top: 20px;
+      left: 20px;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.75);
+      color: white;
+      padding: 12px 16px;
+      font-family: Arial, sans-serif;
+      font-size: 18px;
+      border-radius: 8px;
+    }
+  </style>
 </head>
+<body>
 
-<body style="margin:0; overflow:hidden;">
-
-  <div id="status"
-       style="
-       position:fixed;
-       top:20px;
-       left:20px;
-       z-index:9999;
-       background:#111;
-       color:white;
-       padding:12px;
-       font-family:Arial;">
-    Starting AR...
-  </div>
+  <div id="status">Starting AR...</div>
 
   <a-scene
-    vr-mode-ui="enabled: false;"
-    renderer="logarithmicDepthBuffer: true; precision: medium;"
-    embedded
-    arjs="trackingMethod: best; sourceType: webcam; debugUIEnabled: false;"
+    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: true; uiLoading: true;"
+    color-space="sRGB"
+    renderer="colorManagement: true, physicallyCorrectLights: true"
+    vr-mode-ui="enabled: false"
+    device-orientation-permission-ui="enabled: false"
   >
+    <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
-    <a-nft
-  id="marker"
-  type="nft"
-  url="./myframe-fixed"
-  emitevents="true"
-  >
-
+    <a-entity id="target" mindar-image-target="targetIndex: 0">
       <a-box
-        position="150 250 -100"
-        scale="60 60 60"
+        position="0 0 0.1"
+        scale="0.4 0.4 0.4"
         color="red">
       </a-box>
-
-    </a-nft>
-
-    <a-entity camera></a-entity>
-
+    </a-entity>
   </a-scene>
 
   <script>
     const status = document.getElementById("status");
-    const marker = document.getElementById("marker");
+    const scene = document.querySelector("a-scene");
+    const target = document.getElementById("target");
 
-    window.addEventListener("arjs-video-loaded", () => {
-      status.innerText = "Camera ready — point at image";
+    scene.addEventListener("renderstart", () => {
+      status.innerHTML = "Camera ready — point at image";
     });
 
-    window.addEventListener("arjs-nft-loaded", () => {
-      status.innerText = "NFT files loaded — searching...";
-    });
-
-    marker.addEventListener("markerFound", () => {
-      status.innerText = "MARKER FOUND!";
+    target.addEventListener("targetFound", () => {
+      status.innerHTML = "TARGET FOUND!";
       status.style.background = "green";
     });
 
-    marker.addEventListener("markerLost", () => {
-      status.innerText = "Marker lost — searching...";
-      status.style.background = "#111";
-    });
-
-    window.addEventListener("error", (e) => {
-      status.innerText = "ERROR: " + e.message;
-      status.style.background = "red";
+    target.addEventListener("targetLost", () => {
+      status.innerHTML = "Target lost — searching...";
+      status.style.background = "rgba(0, 0, 0, 0.75)";
     });
   </script>
 
