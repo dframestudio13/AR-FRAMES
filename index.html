@@ -47,13 +47,22 @@
   Start AR
 </button>
 
-  <a-scene
-    mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: true; uiLoading: true;"
-    color-space="sRGB"
-    renderer="colorManagement: true, physicallyCorrectLights: true"
-    vr-mode-ui="enabled: false"
-    device-orientation-permission-ui="enabled: false"
-  >
+ <a-scene
+  mindar-image="
+    imageTargetSrc: ./targets.mind;
+    autoStart: true;
+    uiScanning: true;
+    uiLoading: true;
+    filterMinCF: 0.001;
+    filterBeta: 0.01;
+    warmupTolerance: 5;
+    missTolerance: 5;
+  "
+  color-space="sRGB"
+  renderer="colorManagement: true, physicallyCorrectLights: true"
+  vr-mode-ui="enabled: false"
+  device-orientation-permission-ui="enabled: false"
+>
    <a-assets>
   <video
   id="arVideo"
@@ -71,7 +80,7 @@
   src="#arVideo"
   position="0 0 0.01"
   width="1"
-  height="1.324">
+  height="1.30">
 </a-video>
       
     </a-entity>
