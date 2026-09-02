@@ -31,17 +31,20 @@
 <body>
 
   <div id="status">Starting AR...</div>
-  <button id="startVideo"
+    
+ <button id="startVideo"
   style="
     position: fixed;
     bottom: 80px;
     left: 50%;
     transform: translateX(-50%);
     z-index: 10000;
-    padding: 15px 25px;
+    padding: 16px 28px;
     font-size: 18px;
+    border: none;
+    border-radius: 10px;
   ">
-  Start Video
+  Start AR
 </button>
 
   <a-scene
@@ -53,25 +56,24 @@
   >
    <a-assets>
   <video
-    id="arVideo"
-    src="./potrait-video.mp4"
-    preload="auto"
-    loop
-    muted
-    autoplay
-    playsinline
-    webkit-playsinline>
-  </video>
+  id="arVideo"
+  src="./potrait-video.mp4"
+  preload="auto"
+  loop
+  playsinline
+  webkit-playsinline>
+</video>
 </a-assets>
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity id="target" mindar-image-target="targetIndex: 0">
-     <a-video
-      src="#arVideo"
-      position="0 0 0.01"
-      width="1"
-      height="1.777">
-   </a-video>
+    <a-video
+  src="#arVideo"
+  position="0 0 0.01"
+  width="1"
+  height="1.324">
+</a-video>
+      
     </a-entity>
   </a-scene>
 
@@ -81,40 +83,45 @@
     const target = document.getElementById("target");
     const video = document.getElementById("arVideo");
     const startButton = document.getElementById("startVideo");
+let videoUnlocked = false;
 
 startButton.addEventListener("click", async () => {
-  video.muted = true;
-
   try {
+    video.muted = false;
+
+    // Unlock video + audio on iPhone
     await video.play();
+    video.pause();
+    video.currentTime = 0;
+
+    videoUnlocked = true;
     startButton.style.display = "none";
-    status.innerHTML = "Video ready — point at image";
+    status.innerHTML = "Point camera at image";
   } catch (error) {
-    status.innerHTML = "Video could not start";
     console.log(error);
   }
 });
-
     scene.addEventListener("renderstart", () => {
       status.innerHTML = "Camera ready — point at image";
     });
 
-    target.addEventListener("targetFound", () => {
+  target.addEventListener("targetFound", () => {
   status.innerHTML = "TARGET FOUND!";
   status.style.background = "green";
 
-  if (!video.paused) {
+  if (videoUnlocked) {
+    video.currentTime = 0;
     video.play();
   }
 });
 
     target.addEventListener("targetLost", () => {
-      status.innerHTML = "Target lost — searching...";
-      status.style.background = "rgba(0, 0, 0, 0.75)";
-      video.pause();
-      video.currentTime = 0;
-    });
+  status.innerHTML = "Target lost — searching...";
+  status.style.background = "rgba(0, 0, 0, 0.75)";
 
+  video.pause();
+  video.currentTime = 0;
+});
     document.body.addEventListener("click", () => {
   video.play();
 });
