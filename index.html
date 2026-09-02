@@ -47,16 +47,16 @@
   Start AR
 </button>
 
- <a-scene
+<a-scene
   mindar-image="
     imageTargetSrc: ./targets.mind;
     autoStart: true;
     uiScanning: true;
     uiLoading: true;
-    filterMinCF: 0.001;
-    filterBeta: 0.01;
-    warmupTolerance: 5;
-    missTolerance: 5;
+    filterMinCF: 0.0005;
+    filterBeta: 0.005;
+    warmupTolerance: 8;
+    missTolerance: 8;
   "
   color-space="sRGB"
   renderer="colorManagement: true, physicallyCorrectLights: true"
