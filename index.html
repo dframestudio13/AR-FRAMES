@@ -39,13 +39,14 @@
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
   >
-    <a-assets>
+   <a-assets>
   <video
     id="arVideo"
     src="./portrait-video.mp4"
     preload="auto"
     loop
     muted
+    autoplay
     playsinline
     webkit-playsinline>
   </video>
@@ -72,11 +73,19 @@
       status.innerHTML = "Camera ready — point at image";
     });
 
-    target.addEventListener("targetFound", () => {
-      status.innerHTML = "TARGET FOUND!";
-      status.style.background = "green";
-      video.play();
-    });
+    target.addEventListener("targetFound", async () => {
+  status.innerHTML = "TARGET FOUND!";
+  status.style.background = "green";
+
+  try {
+    video.muted = true;
+    video.playsInline = true;
+    await video.play();
+  } catch (err) {
+    console.log("Video play error:", err);
+    status.innerHTML = "Tap screen to start video";
+  }
+});
 
     target.addEventListener("targetLost", () => {
       status.innerHTML = "Target lost — searching...";
@@ -84,6 +93,10 @@
       video.pause();
       video.currentTime = 0;
     });
+
+    document.body.addEventListener("click", () => {
+  video.play();
+});
   </script>
 
 </body>
