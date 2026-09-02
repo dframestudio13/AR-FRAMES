@@ -39,14 +39,26 @@
     vr-mode-ui="enabled: false"
     device-orientation-permission-ui="enabled: false"
   >
+    <a-assets>
+  <video
+    id="arVideo"
+    src="./portrait-video.mp4"
+    preload="auto"
+    loop
+    muted
+    playsinline
+    webkit-playsinline>
+  </video>
+</a-assets>
     <a-camera position="0 0 0" look-controls="enabled: false"></a-camera>
 
     <a-entity id="target" mindar-image-target="targetIndex: 0">
-      <a-box
-        position="0 0 0.1"
-        scale="0.4 0.4 0.4"
-        color="red">
-      </a-box>
+     <a-video
+      src="#arVideo"
+      position="0 0 0.01"
+      width="1"
+      height="1.777">
+   </a-video>
     </a-entity>
   </a-scene>
 
@@ -54,6 +66,7 @@
     const status = document.getElementById("status");
     const scene = document.querySelector("a-scene");
     const target = document.getElementById("target");
+    const video = document.getElementById("arVideo");
 
     scene.addEventListener("renderstart", () => {
       status.innerHTML = "Camera ready — point at image";
@@ -62,11 +75,14 @@
     target.addEventListener("targetFound", () => {
       status.innerHTML = "TARGET FOUND!";
       status.style.background = "green";
+      video.play();
     });
 
     target.addEventListener("targetLost", () => {
       status.innerHTML = "Target lost — searching...";
       status.style.background = "rgba(0, 0, 0, 0.75)";
+      video.pause();
+      video.currentTime = 0;
     });
   </script>
 
