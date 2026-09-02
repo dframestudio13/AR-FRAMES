@@ -31,6 +31,18 @@
 <body>
 
   <div id="status">Starting AR...</div>
+  <button id="startVideo"
+  style="
+    position: fixed;
+    bottom: 80px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 10000;
+    padding: 15px 25px;
+    font-size: 18px;
+  ">
+  Start Video
+</button>
 
   <a-scene
     mindar-image="imageTargetSrc: ./targets.mind; autoStart: true; uiScanning: true; uiLoading: true;"
@@ -68,22 +80,31 @@
     const scene = document.querySelector("a-scene");
     const target = document.getElementById("target");
     const video = document.getElementById("arVideo");
+    const startButton = document.getElementById("startVideo");
+
+startButton.addEventListener("click", async () => {
+  video.muted = true;
+
+  try {
+    await video.play();
+    startButton.style.display = "none";
+    status.innerHTML = "Video ready — point at image";
+  } catch (error) {
+    status.innerHTML = "Video could not start";
+    console.log(error);
+  }
+});
 
     scene.addEventListener("renderstart", () => {
       status.innerHTML = "Camera ready — point at image";
     });
 
-    target.addEventListener("targetFound", async () => {
+    target.addEventListener("targetFound", () => {
   status.innerHTML = "TARGET FOUND!";
   status.style.background = "green";
 
-  try {
-    video.muted = true;
-    video.playsInline = true;
-    await video.play();
-  } catch (err) {
-    console.log("Video play error:", err);
-    status.innerHTML = "Tap screen to start video";
+  if (!video.paused) {
+    video.play();
   }
 });
 
