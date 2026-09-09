@@ -59,7 +59,7 @@
     missTolerance: 8;
   "
   color-space="sRGB"
-  renderer="colorManagement: true, physicallyCorrectLights: true"
+  renderer="colorManagement: true, physicallyCorrectLights: true, antialias:true, precision:high"
   vr-mode-ui="enabled: false"
   device-orientation-permission-ui="enabled: false"
 >
@@ -110,9 +110,15 @@ startButton.addEventListener("click", async () => {
     console.log(error);
   }
 });
-    scene.addEventListener("renderstart", () => {
-      status.innerHTML = "Camera ready — point at image";
-    });
+   scene.addEventListener("renderstart", () => {
+  const renderer = scene.renderer;
+
+  renderer.setPixelRatio(
+    Math.min(window.devicePixelRatio, 2)
+  );
+
+  status.innerHTML = "Camera ready — point at image";
+});
 
   target.addEventListener("targetFound", () => {
   status.innerHTML = "TARGET FOUND!";
