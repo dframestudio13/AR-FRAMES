@@ -49,15 +49,15 @@
 
 <a-scene
   mindar-image="
-    imageTargetSrc: ./targets.mind;
-    autoStart: true;
-    uiScanning: true;
-    uiLoading: true;
-    filterMinCF: 0.0005;
-    filterBeta: 0.005;
-    warmupTolerance: 8;
-    missTolerance: 8;
-  "
+  imageTargetSrc: ./targets.mind;
+  autoStart: true;
+  uiScanning: true;
+  uiLoading: true;
+  filterMinCF: 0.0003;
+  filterBeta: 0.003;
+  warmupTolerance: 10;
+  missTolerance: 10;
+"
   color-space="sRGB"
   renderer="colorManagement: true, physicallyCorrectLights: true, antialias:true, precision:high"
   vr-mode-ui="enabled: false"
@@ -79,8 +79,8 @@
    <a-video
   src="#arVideo"
   position="0 0 0.01"
-  width="1"
-  height="1.375">
+  width="1.02"
+  height="1.4025">
 </a-video>
       
     </a-entity>
