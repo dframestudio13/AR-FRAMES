@@ -125,17 +125,14 @@ startButton.addEventListener("click", async () => {
   status.style.background = "green";
 
   if (videoUnlocked) {
-    video.currentTime = 0;
     video.play();
   }
 });
-
-    target.addEventListener("targetLost", () => {
+   target.addEventListener("targetLost", () => {
   status.innerHTML = "Target lost — searching...";
   status.style.background = "rgba(0, 0, 0, 0.75)";
 
   video.pause();
-  video.currentTime = 0;
 });
     document.body.addEventListener("click", () => {
   video.play();
