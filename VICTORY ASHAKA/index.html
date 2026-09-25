@@ -32,21 +32,32 @@
 
   <div id="status">Starting AR...</div>
     
- <button id="startVideo"
+ <button
+  id="startVideo"
+  type="button"
   style="
     position: fixed;
-    bottom: 80px;
+    bottom: 90px;
     left: 50%;
     transform: translateX(-50%);
-    z-index: 10000;
-    padding: 16px 28px;
-    font-size: 18px;
+    z-index: 999999;
+    pointer-events: auto;
+    touch-action: manipulation;
+    padding: 18px 30px;
+    font-size: 20px;
     border: none;
-    border-radius: 10px;
+    border-radius: 12px;
+    background: white;
+    color: #007aff;
   ">
   Start AR
+
+   
 </button>
 
+
+  
+  
 <a-scene
   mindar-image="
   imageTargetSrc: ./targets (3).mind;
@@ -94,20 +105,21 @@
     const startButton = document.getElementById("startVideo");
 let videoUnlocked = false;
 
-startButton.addEventListener("click", async () => {
+startButton.addEventListener("click", async (event) => {
+  event.preventDefault();
+  event.stopPropagation();
+
   try {
     video.muted = false;
 
-    // Unlock video + audio on iPhone
     await video.play();
-    video.pause();
-    video.currentTime = 0;
 
     videoUnlocked = true;
     startButton.style.display = "none";
     status.innerHTML = "Point camera at image";
   } catch (error) {
     console.log(error);
+    status.innerHTML = "Could not start video";
   }
 });
    scene.addEventListener("renderstart", () => {
